@@ -1899,7 +1899,8 @@ void CNtlSobCharProxy::DeleteGuardEffect()
 
 void CNtlSobCharProxy::CreateRpChargeEffect()
 {
-	m_pDecorationProxy->CreateRpChargeEffect();
+	const RwUInt8 byGrade = Logic_GetEquippedVisualGrade(m_pSobObj, EQUIP_SLOT_TYPE_PANTS);
+	m_pDecorationProxy->CreateRpChargeEffect(Logic_GetUpgradeAuraEffects(byGrade).pszChargeEffect);
 }
 
 void CNtlSobCharProxy::DeleteRpChargeEffect()

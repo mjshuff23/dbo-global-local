@@ -376,6 +376,17 @@ void			Logic_SetItemStack(CNtlSobItem* pSobItem, RwUInt8 ucStackNum);
 // weapon equip slot에 장착된 item table을 구한다.
 sITEM_TBLDAT*	Logic_GetEquipedWeaponItemTableData(CNtlSob *pSobObj);
 
+struct SUpgradeAuraEffects
+{
+	const RwChar* pszGuardEffect;
+	const RwChar* pszChargeEffect;
+	const RwChar* pszDashEffect;
+	const RwChar* pszDashSecondaryEffect;
+};
+
+RwUInt8			Logic_GetEquippedVisualGrade(CNtlSob* pActor, RwUInt8 bySlotIdx);
+const SUpgradeAuraEffects& Logic_GetUpgradeAuraEffects(RwUInt8 byGrade);
+
 // 해당하는 equip slot에 장착된 item serial을 구한다.
 SERIAL_HANDLE	Logic_GetEquipedItemSerial(CNtlSob *pSobObj, RwUInt8 bySlotIdx);
 

@@ -194,6 +194,7 @@ public:
 
 	// rp charging Skill
 	void CreateRpChargeEffect();
+	void CreateRpChargeEffect(const RwChar* pEffectName);
 	void DeleteRpChargeEffect();
 
     // Transform
