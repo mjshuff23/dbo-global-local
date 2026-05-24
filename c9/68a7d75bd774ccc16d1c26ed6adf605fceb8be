@@ -1,0 +1,23 @@
+DboClient/Lib/NtlSimulation/NtlSobCharProxy.cpp
+  s_1327c3e7e78eec::t_3086c82685e980 1892-1893
+DboClient/Lib/NtlSimulation/NtlSobCharProxyDecoration.h
+  s_1327c3e7e78eec::t_3086c82685e980 193
+DboClient/Lib/NtlSimulation/NtlSobCharProxyDecoration.cpp
+  s_1327c3e7e78eec::t_3086c82685e980 1030-1033,1037-1040
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "c968a7d75bd774ccc16d1c26ed6adf605fceb8be",
+  "prompts": {},
+  "sessions": {
+    "s_1327c3e7e78eec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e5743-4d9c-7db0-9ed1-aa30fb6434ef",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  }
+}
