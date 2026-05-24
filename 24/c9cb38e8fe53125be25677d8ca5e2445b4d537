@@ -1,0 +1,19 @@
+DboClient/Lib/NtlSimulation/NtlBehaviorCharGroundMove.cpp
+  s_1327c3e7e78eec::t_6622ba18c158fc 1568-1569,1571-1575,1577-1581,1837
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "24c9cb38e8fe53125be25677d8ca5e2445b4d537",
+  "prompts": {},
+  "sessions": {
+    "s_1327c3e7e78eec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e5743-4d9c-7db0-9ed1-aa30fb6434ef",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  }
+}
