@@ -764,6 +764,20 @@ void CHpGui::UpdateAir()
 
 	if (m_bIsWorldAirPossible)
 	{
+		if (m_eAirColor == TYPE_DISABLE)
+		{
+			CNtlSobAvatar* pSobAvatar = GetNtlSLGlobal()->GetSobAvatar();
+			if (pSobAvatar)
+			{
+				CNtlSobAvatarAttr* pSobAvatarAttr = reinterpret_cast<CNtlSobAvatarAttr*>(pSobAvatar->GetSobAttr());
+				int nMaxAP = pSobAvatarAttr->GetMaxAp();
+				if (nMaxAP == 0)
+					nMaxAP = DBO_CHAR_DEFAULT_AP;
+
+				SetAP(pSobAvatarAttr->GetAp() / 1000, nMaxAP / 1000);
+			}
+		}
+
 		CalculateAirHeight();
 	}
 }
@@ -815,48 +829,66 @@ void CHpGui::EnableAir(bool bFlag)
 
 void CHpGui::SetAP(int nAP, int nMaxAP)
 {
+	if (nMaxAP <= 0)
+		nMaxAP = DBO_CHAR_DEFAULT_AP / 1000;
+
+	if (nMaxAP <= 0)
+		nMaxAP = 1;
+
+	if (nAP < 0)
+		nAP = 0;
+
 	int nPercent = nAP * 100 / nMaxAP;
+	if (nPercent > 100)
+		nPercent = 100;
+
+	if (!m_bIsWorldAirPossible)
+	{
+		m_eAirColor = TYPE_DISABLE;
+		m_psttAirPoint->Format("%u/%u", nAP, nMaxAP);
+		return;
+	}
 
 	bool bChange = false;
 
-	if (nPercent >= 0 && nPercent < 33) // RED
+	if (nPercent <= 33) // RED
 	{
 		if (m_eAirColor != TYPE_RED)
 		{
-		//	m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleRed"));
-		//	m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundRed"));
+			m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleRed"));
+			m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundRed"));
 			m_eAirColor = TYPE_RED;
 			bChange = true;
 		}
 	}
-	else if (nPercent > 33 && nPercent < 66) // YELLOW
+	else if (nPercent <= 66) // YELLOW
 	{
 		if (m_eAirColor != TYPE_YELLOW)
 		{
-		//	m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleYellow"));
-		//	m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundYellow"));
+			m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleYellow"));
+			m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundYellow"));
 			m_eAirColor = TYPE_YELLOW;
 			bChange = true;
 		}
 	}
-	else if (nPercent > 66) // BLUE
+	else // BLUE
 	{
 		if (m_eAirColor != TYPE_BLUE)
 		{
-		//	m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleBlue"));
-		//	m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundBlue"));
+			m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleBlue"));
+			m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundBlue"));
 			m_eAirColor = TYPE_BLUE;
 			bChange = true;
 		}
 	}
 
-	/*if (bChange)
+	if (bChange)
 	{
 		CRectangle rec = m_psttAirPoint->GetScreenRect();
 
 		m_surMidAir.SetPosition(rec.left - 3, rec.top - 44);
 		m_surRoundAir.SetPosition(rec.left - 6, rec.top - 44);
-	}*/
+	}
 
 	m_psttAirPoint->Format("%u/%u", nAP, nMaxAP);
 }
@@ -939,8 +971,8 @@ VOID CHpGui::OnPaintPost()
 
 	if (m_eAirColor != TYPE_DISABLE)
 	{
-		//m_surMidAir.Render();
-		//m_surRoundAir.Render();
+		m_surMidAir.Render();
+		m_surRoundAir.Render();
 	}
 }
 
@@ -984,4 +1016,3 @@ VOID CHpGui::OnAvatarClick( gui::CComponent* pComponent )
 		Logic_AvatarTarget();
 	}
 }
-
