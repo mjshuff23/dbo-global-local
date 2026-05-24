@@ -1565,12 +1565,20 @@ void CNtlBehaviorCharGroundMove::CreateDashEffect(RwUInt32 uiMoveDirFlags)
     DestroyDashEffectSmoke();
 
     CNtlPLAttach* pPLChar = (CNtlPLAttach*)m_pActor->GetSobProxy()->GetPLMainEntity();
+    const RwUInt8 byBootsGrade = Logic_GetEquippedVisualGrade(m_pActor, EQUIP_SLOT_TYPE_BOOTS);
+    const SUpgradeAuraEffects& sAuraEffects = Logic_GetUpgradeAuraEffects(byBootsGrade);
 
-    m_pDashEffect = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, NTL_VID_DASH_ACTIVE_01);
-    pPLChar->Attach((CNtlPLAttach*)m_pDashEffect);
+    m_pDashEffect = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, sAuraEffects.pszDashEffect);
+    if (!m_pDashEffect && strcmp(sAuraEffects.pszDashEffect, NTL_VID_DASH_ACTIVE_01) != 0)
+        m_pDashEffect = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, NTL_VID_DASH_ACTIVE_01);
+    if (m_pDashEffect)
+        pPLChar->Attach((CNtlPLAttach*)m_pDashEffect);
 
-    m_pDashEffectSmoke = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, NTL_VID_DASH_ACTIVE_02);
-    pPLChar->Attach((CNtlPLAttach*)m_pDashEffectSmoke);    
+    m_pDashEffectSmoke = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, sAuraEffects.pszDashSecondaryEffect);
+    if (!m_pDashEffectSmoke && strcmp(sAuraEffects.pszDashSecondaryEffect, NTL_VID_DASH_ACTIVE_02) != 0)
+        m_pDashEffectSmoke = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, NTL_VID_DASH_ACTIVE_02);
+    if (m_pDashEffectSmoke)
+        pPLChar->Attach((CNtlPLAttach*)m_pDashEffectSmoke);
 
     if(m_pActor->GetClassID() == SLCLASS_AVATAR)
         m_pDashLine = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, NTL_VID_DASH_LINE);
