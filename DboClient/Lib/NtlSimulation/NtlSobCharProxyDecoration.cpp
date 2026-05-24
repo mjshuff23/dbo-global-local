@@ -1027,9 +1027,18 @@ RwBool CNtlSobCharDecorationProxy::DetachRPBonusEffect()
 
 void CNtlSobCharDecorationProxy::CreateGuardEffect()
 {
+	CreateGuardEffect(NTL_VID_GUARD_SUCCESS);
+}
+
+void CNtlSobCharDecorationProxy::CreateGuardEffect(const RwChar* pEffectName)
+{
 	DeleteGuardEffect();
 
-	m_pGuardEffect = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, NTL_VID_GUARD_SUCCESS);
+	const RwChar* pRequestedEffect = pEffectName ? pEffectName : NTL_VID_GUARD_SUCCESS;
+	m_pGuardEffect = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, pRequestedEffect);
+	if (!m_pGuardEffect && strcmp(pRequestedEffect, NTL_VID_GUARD_SUCCESS) != 0)
+		m_pGuardEffect = GetSceneManager()->CreateEntity(PLENTITY_EFFECT, NTL_VID_GUARD_SUCCESS);
+
 	if (m_pGuardEffect)
 	{
 		RwV3d vOffset = ZeroAxis;

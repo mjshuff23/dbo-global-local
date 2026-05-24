@@ -190,6 +190,7 @@ public:
 
 	 // Guard Skill
 	void CreateGuardEffect();
+	void CreateGuardEffect(const RwChar* pEffectName);
 	void DeleteGuardEffect();
 
 	// rp charging Skill

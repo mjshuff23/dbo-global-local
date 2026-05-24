@@ -1889,7 +1889,8 @@ void CNtlSobCharProxy::DetachRPBonusEffect()
 
 void CNtlSobCharProxy::CreateGuardEffect()
 {
-	m_pDecorationProxy->CreateGuardEffect();
+	const RwUInt8 byGrade = Logic_GetEquippedVisualGrade(m_pSobObj, EQUIP_SLOT_TYPE_JACKET);
+	m_pDecorationProxy->CreateGuardEffect(Logic_GetUpgradeAuraEffects(byGrade).pszGuardEffect);
 }
 
 void CNtlSobCharProxy::DeleteGuardEffect()
