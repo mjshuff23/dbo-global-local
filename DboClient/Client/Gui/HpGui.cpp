@@ -762,7 +762,7 @@ void CHpGui::UpdateAir()
 {
 	CheckAir();
 
-	if (m_bIsWorldAirPossible)
+	if (m_bIsWorldAirPossible && m_ppnlAirPoint->IsVisible())
 	{
 		if (m_eAirColor == TYPE_DISABLE)
 		{
@@ -822,6 +822,10 @@ void CHpGui::EnableAir(bool bFlag)
 
 		SetAP(pSobAvatarAttr->GetAp() / 1000, nMaxAP / 1000);
 		CalculateAirHeight();
+	}
+	else
+	{
+		m_eAirColor = TYPE_DISABLE;
 	}
 
 	m_ppnlAirPoint->Show(bFlag);
@@ -969,7 +973,7 @@ VOID CHpGui::OnPaintPost()
 	m_feMailFull.Render();
 	m_feBattleCombat.Render();
 
-	if (m_eAirColor != TYPE_DISABLE)
+	if (m_eAirColor != TYPE_DISABLE && m_ppnlAirPoint->IsVisible())
 	{
 		m_surMidAir.Render();
 		m_surRoundAir.Render();
