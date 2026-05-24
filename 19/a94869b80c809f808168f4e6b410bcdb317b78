@@ -1,0 +1,19 @@
+DboClient/Client/Gui/HpGui.cpp
+  s_1327c3e7e78eec::t_b43d916a2e5924 765,826-829,976
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "19a94869b80c809f808168f4e6b410bcdb317b78",
+  "prompts": {},
+  "sessions": {
+    "s_1327c3e7e78eec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e5743-4d9c-7db0-9ed1-aa30fb6434ef",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  }
+}
