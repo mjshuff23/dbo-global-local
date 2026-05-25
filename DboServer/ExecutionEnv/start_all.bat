@@ -145,14 +145,16 @@ exit /b 0
 popd
 echo.
 echo DBO startup failed. Run stop_all.bat before trying again.
+pause
 exit /b 1
 
 :wait_listener
 set "WAIT_ADDRESS=%~1"
 set "WAIT_LABEL=%~2"
 set /a "WAIT_SECONDS=%~3"
+for /f "tokens=2 delims=:" %%P in ("%WAIT_ADDRESS%") do set "WAIT_PORT=%%P"
 :wait_loop
-netstat -ano -p tcp | findstr /C:"%WAIT_ADDRESS%" | findstr /C:"LISTENING" >nul
+netstat -ano | findstr /C:":%WAIT_PORT% " | findstr /C:"LISTENING" >nul
 if not errorlevel 1 (
     echo   Ready: %WAIT_LABEL% ^(%WAIT_ADDRESS%^)
     exit /b 0
