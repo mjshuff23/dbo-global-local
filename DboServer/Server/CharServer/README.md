@@ -13,9 +13,10 @@
 ## Files to inspect
 
 - `CharServer.cpp/.h`: service startup and initialization.
-- `PacketCharServer.cpp`: likely central packet handling for character flows.
-- Session classes: client and neighboring service communication.
-- DB/query-related code paths for character persistence.
+- `PacketCharServer.cpp`: validates `sUC_CHARACTER_ADD_REQ`, race/class combinations, and newbie-table-backed character creation before forwarding it.
+- `ClientSession.*`: client-facing connection and packet dispatch.
+- `QueryServerPacket.cpp` and `QueryServerSession.*`: persistence request/response flow with QueryServer.
+- `DboShared/NtlShared2/NtlPacketUC.h` and `NtlPacketCQ.h`: shared client-to-character and character-to-query packet contracts.
 
 ## Higher-level analogy
 
