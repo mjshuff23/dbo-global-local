@@ -1,0 +1,32 @@
+DboServer/Server/QueryServer/README.md
+  s_1327c3e7e78eec::t_14c1ef8cced6fb 11-20,27
+DboServer/Server/CharServer/README.md
+  s_1327c3e7e78eec::t_14c1ef8cced6fb 16-19,29
+docs/CPP_LEARNING_PATH.md
+  s_1327c3e7e78eec::t_14c1ef8cced6fb 1-81
+docs/NEW_RACE_RESEARCH.md
+  s_1327c3e7e78eec::t_14c1ef8cced6fb 1-66
+README.md
+  s_1327c3e7e78eec::t_14c1ef8cced6fb 16-28,52,58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "5cd3a7e7dc3afec5f97eebe9f274aeac7e592500",
+  "prompts": {},
+  "humans": {
+    "h_d7f45408b008e1": {
+      "author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1327c3e7e78eec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e5743-4d9c-7db0-9ed1-aa30fb6434ef",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  }
+}
