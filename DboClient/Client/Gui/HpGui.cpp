@@ -945,6 +945,10 @@ VOID CHpGui::OnMove(RwInt32 nX, RwInt32 nY)
 	nCenterY = rect.top + ((rect.bottom - rect.top) / 2);
 
 	m_feBattleCombat.SetCenterPos(nCenterX, nCenterY);
+
+	rect = m_psttAirPoint->GetScreenRect();
+	m_surMidAir.SetPosition(rect.left - 3, rect.top - 44);
+	m_surRoundAir.SetPosition(rect.left - 6, rect.top - 44);
 }
 
 VOID CHpGui::OnResize(RwInt32 nX, RwInt32 nY)
