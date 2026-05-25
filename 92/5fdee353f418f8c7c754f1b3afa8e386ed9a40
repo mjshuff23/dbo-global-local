@@ -1,0 +1,34 @@
+DboClient/Client/Gui/HpGui.cpp
+  s_e4bf2f43322bde::t_bdbb40abe12b0c 565
+  s_e4bf2f43322bde::t_0031eedc9ef070 403
+  s_e4bf2f43322bde::t_b6245f8afda41b 146
+  s_e4bf2f43322bde::t_c9bb4a6b3a615f 850
+  s_e4bf2f43322bde::t_6ecbb7bb1254a8 895
+  s_e4bf2f43322bde::t_5430ad0132fc88 911
+  s_e4bf2f43322bde::t_4a40f04bb9a5f3 575
+  s_e4bf2f43322bde::t_45a0dc2c52b153 151
+  s_e4bf2f43322bde::t_5c5d7de455906e 396
+DboClient/Lib/NtlSimulation/NtlSLLogic.cpp
+  s_e4bf2f43322bde::t_aab5e4a858f385 145
+  s_e4bf2f43322bde::t_4e2c0e8140d09c 3130-3132
+  s_e4bf2f43322bde::t_7c6ced96c84d32 276
+  s_e4bf2f43322bde::t_5097659cccf0d7 1373
+  s_e4bf2f43322bde::t_d7797bc0999153 528
+  s_e4bf2f43322bde::t_f069ed1899922e 284
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "925fdee353f418f8c7c754f1b3afa8e386ed9a40",
+  "prompts": {},
+  "sessions": {
+    "s_e4bf2f43322bde": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2f3896ad-a024-4089-be84-369b7855164a",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  }
+}
