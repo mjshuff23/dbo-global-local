@@ -5,6 +5,7 @@
 #include "AsyncQuery.h"
 
 #include "NtlLog.h"
+#include <algorithm>
 #include <functional>
 
 std::list<Database*> Database::s_listDatabase;

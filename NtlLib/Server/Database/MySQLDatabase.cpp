@@ -41,6 +41,7 @@ bool MySQLDatabase::Initialize(CNtlString Hostname, unsigned int port, CNtlStrin
 	static bool is_lib_inited = false;
 	MYSQL *temp, *temp2;
 	my_bool my_true = true;
+	unsigned int ssl_mode = SSL_MODE_DISABLED;
 
 	mHostname = Hostname;
 	mConnectionCount = ConnectionCount;
@@ -83,6 +84,9 @@ bool MySQLDatabase::Initialize(CNtlString Hostname, unsigned int port, CNtlStrin
 
 	if (mysql_options(temp, MYSQL_OPT_RECONNECT, &my_true))
 		ERR_LOG(LOG_SYSTEM, "MYSQL_OPT_RECONNECT could not be set, connection drops may occur but will be counteracted.\n");
+
+	if (mysql_options(temp, MYSQL_OPT_SSL_MODE, &ssl_mode))
+		ERR_LOG(LOG_SYSTEM, "MYSQL_OPT_SSL_MODE could not be disabled for the local database connection.\n");
 
 	temp2 = mysql_real_connect(temp, Hostname.c_str(), Username.c_str(), Password.c_str(), DatabaseName.c_str(), port, NULL, 0);
 	if (temp2 == NULL)
@@ -250,8 +254,11 @@ QueryResult * MySQLDatabase::_StoreQueryResult(DatabaseConnection * con)
 bool MySQLDatabase::_Reconnect(MySQLDatabaseConnection * conn)
 {
 	MYSQL * temp, *temp2;
+	unsigned int ssl_mode = SSL_MODE_DISABLED;
 
 	temp = mysql_init(NULL);
+	if (mysql_options(temp, MYSQL_OPT_SSL_MODE, &ssl_mode))
+		ERR_LOG(LOG_SYSTEM, "MYSQL_OPT_SSL_MODE could not be disabled for the local database reconnection.");
 	temp2 = mysql_real_connect(temp, mHostname.c_str(), mUsername.c_str(), mPassword.c_str(), mDatabaseName.c_str(), mPort, NULL, 0);
 	if (temp2 == NULL)
 	{
