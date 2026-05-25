@@ -1155,31 +1155,20 @@ RwBool CNtlPLItem::SetUpgradeEffect(ENtlPLItemGrade eGrade)
         m_pUpgradeEffects.clear();
     }        
 
-	// 1,2 Upgrades do not display effects.
-    if(eGrade < ITEM_GRADE_3)
+	const RwInt32 nGradeIndex = static_cast<RwInt32>(eGrade);
+
+	// Grades 1 and 2 do not display effects, and unexpected grades are inert.
+    if(nGradeIndex < ITEM_GRADE_3 || nGradeIndex >= MAX_UPGRADE_EFFECT_COUNT)
     {
         return TRUE;
     }
 
-    CNtlInstanceEffect* pGradeEffect = NULL; 
+	SUpgradeEffectProperty* pUpgradeProperty = m_pProperty->GetUpgradeEffectProperty();
+	if (!pUpgradeProperty || pUpgradeProperty->szEffect[nGradeIndex][0] == '\0')
+		return TRUE;
 
-	//// creates upgrade effects for each
-	//switch (eGrade)
-	//{
-	//	case ITEM_GRADE_3: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect1);
-	//	case ITEM_GRADE_4: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect2);
-	//	case ITEM_GRADE_5: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect3);
-	//	case ITEM_GRADE_6: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect4);
-	//	case ITEM_GRADE_7: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect5);
-	//	case ITEM_GRADE_8: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect6);
-	//	case ITEM_GRADE_9: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect7);
-	//	case ITEM_GRADE_10: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect8);
-	//	case ITEM_GRADE_11: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect9);
-	//	case ITEM_GRADE_12: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect10);
-	//	case ITEM_GRADE_13: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect11);
-	//	case ITEM_GRADE_14: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect12);
-	//	case ITEM_GRADE_15: pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, m_pProperty->GetUpgradeEffectProperty()->szEffect13);
-	//}
+	const RwChar* pszEffectName = pUpgradeProperty->szEffect[nGradeIndex];
+    CNtlInstanceEffect* pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, pszEffectName);
 
 	if( !pGradeEffect )
 		return TRUE;
@@ -1194,27 +1183,39 @@ RwBool CNtlPLItem::SetUpgradeEffect(ENtlPLItemGrade eGrade)
 		return FALSE;        
 	}
 
+	RwBool bAttached = FALSE;
+
     // First bone
-	if (strlen(m_pProperty->GetUpgradeEffectProperty()->szBone1) > 0)
+	if (strlen(pUpgradeProperty->szBone1) > 0)
 	{
 		SPLAttachAttr sAttachAttr;
-		sAttachAttr.vOffsetPos = m_pProperty->GetUpgradeEffectProperty()->vOffset1;
-		AttachBone(pGradeEffect, m_pProperty->GetUpgradeEffectProperty()->szBone1, &sAttachAttr);
+		sAttachAttr.vOffsetPos = pUpgradeProperty->vOffset1;
+		AttachBone(pGradeEffect, pUpgradeProperty->szBone1, &sAttachAttr);
 		m_pUpgradeEffects.push_back(pGradeEffect);
 		pGradeEffect->SetVisible(m_bEnableUpgradeEffect);
+		bAttached = TRUE;
 	}
 
     // If the second bone is set, add an Effect.
-    if(strlen(m_pProperty->GetUpgradeEffectProperty()->szBone2) > 0)
+    if(strlen(pUpgradeProperty->szBone2) > 0)
     {
-        pGradeEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, pGradeEffect->GetName());
+		CNtlInstanceEffect* pSecondEffect = pGradeEffect;
+		if (bAttached)
+			pSecondEffect = (CNtlInstanceEffect*)GetSceneManager()->CreateEntity(PLENTITY_EFFECT, pszEffectName);
 
-        SPLAttachAttr sAttachAttr2;
-        sAttachAttr2.vOffsetPos = m_pProperty->GetUpgradeEffectProperty()->vOffset2;
-        AttachBone(pGradeEffect, m_pProperty->GetUpgradeEffectProperty()->szBone2, &sAttachAttr2);
-        m_pUpgradeEffects.push_back(pGradeEffect);
-        pGradeEffect->SetVisible(m_bEnableUpgradeEffect);
+		if (pSecondEffect)
+		{
+			SPLAttachAttr sAttachAttr2;
+			sAttachAttr2.vOffsetPos = pUpgradeProperty->vOffset2;
+			AttachBone(pSecondEffect, pUpgradeProperty->szBone2, &sAttachAttr2);
+			m_pUpgradeEffects.push_back(pSecondEffect);
+			pSecondEffect->SetVisible(m_bEnableUpgradeEffect);
+			bAttached = TRUE;
+		}
     }
+
+	if (!bAttached)
+		pGradeEffect->Finish();
 
     return TRUE;
 }

@@ -143,12 +143,12 @@ RwBool CHpGui::Create(void)
 	m_slotAvatarFocused = m_pbtnAvatar->SigFocused().Connect(this, &CHpGui::OnAvatarFocused);
 	m_slotAvatarClick = m_pbtnAvatar->SigClicked().Connect(this, &CHpGui::OnAvatarClick);
 
-		// AvatarBtn은 버튼이 아닌것처럼. 사운드 없애기
+		// AvatarBtn is not a real button - disable click/focus sounds
 	m_pbtnAvatar->SetClickSound( NULL );
 	m_pbtnAvatar->SetDisableSound( NULL );
 	m_pbtnAvatar->SetFocusSound( NULL );
 
-	// RP는 0으로 세팅
+	// Initialize RP gauge from 0
 	m_ppgbRp->SetRange( 0, 100 );
 	m_ppgbRp->SetPos( 0 );
 
@@ -393,14 +393,14 @@ void CHpGui::HandleEvents(RWS::CMsg &pMsg)
 			m_pBuff->SetBuffAll(pSobAvatar->GetSerialID() );
 		}				
 
-		// Avatar가 초기 생성된 후 GUI에 데이터 입력하라는 최초 단일의 시그널이 EVENT_AIUT_SKILL.
+		// On initial Avatar load, when GUI receives first input, update via EVENT_AIUT_SKILL signal.
 		if( pUpdate->uiUpdateType & EVENT_AIUT_SKILL )
 		{
 			SAvatarInfo* pAvatarInfo = GetNtlSLGlobal()->GetAvatarInfo();
 			SetMaxRPBall(pAvatarInfo->byMaxRpStock);
 		}
 
-		// 실신 상태 일때는 모든 RP, RPBall은 수동으로 리셋한다.
+		// On death, reset all RP and RPBall to their defaults.
 		if( pUpdate->uiUpdateType & EVENT_AIUT_DIE )
 		{
 			SetRPValue( 0, m_nMaxValue );
@@ -562,7 +562,7 @@ void CHpGui::HandleEvents(RWS::CMsg &pMsg)
 
 		if( pData->nRpStock < uiMaxRpStock)
 		{
-			// RP Gauge이미지 변경
+			// Update RP gauge image
 			RwChar buf[256];
 			sprintf_s( buf, 256, "srfNewRPGauge%d", pData->nRpStock );
 			m_ppgbRp->ClearSurface();
@@ -572,7 +572,7 @@ void CHpGui::HandleEvents(RWS::CMsg &pMsg)
 
 		m_ppgbRpBall->SetPos( pData->nRpStock );
 
-		// RpBall Max 갯수가 바뀌면 적용.
+		// Handle change in RpBall max count.
 		if( pData->nMaxRpStock != uiMaxRpStock)
 		{
 			SetMaxRPBall( pData->nMaxRpStock );				
@@ -762,8 +762,23 @@ void CHpGui::UpdateAir()
 {
 	CheckAir();
 
-	if (m_bIsWorldAirPossible)
+	if (m_bIsWorldAirPossible && m_ppnlAirPoint->IsVisible())
 	{
+		// Leaving a no-flight area restores the overlay without requiring a new AP event.
+		if (m_eAirColor == TYPE_DISABLE)
+		{
+			CNtlSobAvatar* pSobAvatar = GetNtlSLGlobal()->GetSobAvatar();
+			if (pSobAvatar)
+			{
+				CNtlSobAvatarAttr* pSobAvatarAttr = reinterpret_cast<CNtlSobAvatarAttr*>(pSobAvatar->GetSobAttr());
+				int nMaxAP = pSobAvatarAttr->GetMaxAp();
+				if (nMaxAP == 0)
+					nMaxAP = DBO_CHAR_DEFAULT_AP;
+
+				SetAP(pSobAvatarAttr->GetAp() / 1000, nMaxAP / 1000);
+			}
+		}
+
 		CalculateAirHeight();
 	}
 }
@@ -809,56 +824,75 @@ void CHpGui::EnableAir(bool bFlag)
 		SetAP(pSobAvatarAttr->GetAp() / 1000, nMaxAP / 1000);
 		CalculateAirHeight();
 	}
+	else
+	{
+		m_eAirColor = TYPE_DISABLE;
+	}
 
 	m_ppnlAirPoint->Show(bFlag);
 }
 
 void CHpGui::SetAP(int nAP, int nMaxAP)
 {
-	int nPercent = nAP * 100 / nMaxAP;
+	if (nMaxAP <= 0)
+		nMaxAP = 1;
+
+	if (nAP < 0)
+		nAP = 0;
+
+	int nPercent = static_cast<int>((static_cast<long long>(nAP) * 100) / nMaxAP);
+	if (nPercent > 100)
+		nPercent = 100;
+
+	if (!m_bIsWorldAirPossible)
+	{
+		m_eAirColor = TYPE_DISABLE;
+		m_psttAirPoint->Format("%d/%d", nAP, nMaxAP);
+		return;
+	}
 
 	bool bChange = false;
 
-	if (nPercent >= 0 && nPercent < 33) // RED
+	if (nPercent <= 33) // RED
 	{
 		if (m_eAirColor != TYPE_RED)
 		{
-		//	m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleRed"));
-		//	m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundRed"));
+			m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleRed"));
+			m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundRed"));
 			m_eAirColor = TYPE_RED;
 			bChange = true;
 		}
 	}
-	else if (nPercent > 33 && nPercent < 66) // YELLOW
+	else if (nPercent <= 66) // YELLOW
 	{
 		if (m_eAirColor != TYPE_YELLOW)
 		{
-		//	m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleYellow"));
-		//	m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundYellow"));
+			m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleYellow"));
+			m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundYellow"));
 			m_eAirColor = TYPE_YELLOW;
 			bChange = true;
 		}
 	}
-	else if (nPercent > 66) // BLUE
+	else // BLUE
 	{
 		if (m_eAirColor != TYPE_BLUE)
 		{
-		//	m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleBlue"));
-		//	m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundBlue"));
+			m_surMidAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeMiddleBlue"));
+			m_surRoundAir.SetSurface(GetNtlGuiManager()->GetSurfaceManager()->GetSurface("AirPoint.srf", "srfTimeRoundBlue"));
 			m_eAirColor = TYPE_BLUE;
 			bChange = true;
 		}
 	}
 
-	/*if (bChange)
+	if (bChange)
 	{
 		CRectangle rec = m_psttAirPoint->GetScreenRect();
 
 		m_surMidAir.SetPosition(rec.left - 3, rec.top - 44);
 		m_surRoundAir.SetPosition(rec.left - 6, rec.top - 44);
-	}*/
+	}
 
-	m_psttAirPoint->Format("%u/%u", nAP, nMaxAP);
+	m_psttAirPoint->Format("%d/%d", nAP, nMaxAP);
 }
 
 void CHpGui::CalculateAirHeight()
@@ -874,7 +908,7 @@ void CHpGui::CalculateAirHeight()
 
 		int nHeight = (int)(pPos->y - sHStuff.fFinialHeight);
 
-		m_psttAirHeight->Format("%uM", nHeight);
+		m_psttAirHeight->Format("%dM", nHeight);
 	}
 	else
 	{
@@ -911,6 +945,10 @@ VOID CHpGui::OnMove(RwInt32 nX, RwInt32 nY)
 	nCenterY = rect.top + ((rect.bottom - rect.top) / 2);
 
 	m_feBattleCombat.SetCenterPos(nCenterX, nCenterY);
+
+	rect = m_psttAirPoint->GetScreenRect();
+	m_surMidAir.SetPosition(rect.left - 3, rect.top - 44);
+	m_surRoundAir.SetPosition(rect.left - 6, rect.top - 44);
 }
 
 VOID CHpGui::OnResize(RwInt32 nX, RwInt32 nY)
@@ -937,10 +975,10 @@ VOID CHpGui::OnPaintPost()
 	m_feMailFull.Render();
 	m_feBattleCombat.Render();
 
-	if (m_eAirColor != TYPE_DISABLE)
+	if (m_eAirColor != TYPE_DISABLE && m_ppnlAirPoint->IsVisible())
 	{
-		//m_surMidAir.Render();
-		//m_surRoundAir.Render();
+		m_surMidAir.Render();
+		m_surRoundAir.Render();
 	}
 }
 
@@ -984,4 +1022,3 @@ VOID CHpGui::OnAvatarClick( gui::CComponent* pComponent )
 		Logic_AvatarTarget();
 	}
 }
-

@@ -1889,7 +1889,8 @@ void CNtlSobCharProxy::DetachRPBonusEffect()
 
 void CNtlSobCharProxy::CreateGuardEffect()
 {
-	m_pDecorationProxy->CreateGuardEffect();
+	const RwUInt8 byGrade = Logic_GetEquippedVisualGrade(m_pSobObj, EQUIP_SLOT_TYPE_JACKET);
+	m_pDecorationProxy->CreateGuardEffect(Logic_GetUpgradeAuraEffects(byGrade).pszGuardEffect);
 }
 
 void CNtlSobCharProxy::DeleteGuardEffect()
@@ -1899,7 +1900,8 @@ void CNtlSobCharProxy::DeleteGuardEffect()
 
 void CNtlSobCharProxy::CreateRpChargeEffect()
 {
-	m_pDecorationProxy->CreateRpChargeEffect();
+	const RwUInt8 byGrade = Logic_GetEquippedVisualGrade(m_pSobObj, EQUIP_SLOT_TYPE_PANTS);
+	m_pDecorationProxy->CreateRpChargeEffect(Logic_GetUpgradeAuraEffects(byGrade).pszChargeEffect);
 }
 
 void CNtlSobCharProxy::DeleteRpChargeEffect()
