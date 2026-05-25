@@ -15,7 +15,8 @@
 
 ## Start Here
 
-These documents are intended as an onboarding map for developers learning this native C++ client/server codebase:
+These documents are intended as an onboarding map for developers learning this
+native C++ client/server codebase:
 
 | Reading order | Document | Purpose |
 | --- | --- | --- |
@@ -28,31 +29,48 @@ These documents are intended as an onboarding map for developers learning this n
 
 ## Local Runtime Layout
 
-Client SDKs, packed game assets, and built executables are local runtime inputs and must not be committed. Place the compatible playable client payload at:
+Client SDKs, packed game assets, and built executables are local runtime inputs
+and must not be committed. Place the compatible playable client payload at:
 
 ```text
 DboClient\DragonBall\
 ```
 
-The repository ignores this payload directory while keeping its small tracked configuration/support files. The client reads `DboClient\DragonBall\ConfigOptions.xml`; keep its AuthServer endpoint aligned with `DboServer\ExecutionEnv\config\AuthServer.ini`.
+The repository ignores this payload directory while keeping its small tracked
+configuration/support files. The client reads
+`DboClient\DragonBall\ConfigOptions.xml`; keep its AuthServer endpoint aligned
+with `DboServer\ExecutionEnv\config\AuthServer.ini`.
 
-For the single-channel Windows runtime, build or place server executables in `DboServer\ExecutionEnv`, then run the batch launchers directly from Windows:
+For the single-channel Windows runtime, build or place server executables in
+`DboServer\ExecutionEnv`, then run the batch launchers directly from Windows:
 
 ```bat
 .\DboServer\ExecutionEnv\start_all.bat
 .\DboServer\ExecutionEnv\stop_all.bat
 ```
 
-`start_all.bat -ClientDir <path>` launches an alternate client payload for testing without replacing the known-good local copy. The batch launchers do not require PowerShell.
+`start_all.bat -ClientDir <path>` launches an alternate client payload for
+testing without replacing the known-good local copy. The batch launchers do not
+require PowerShell.
 
 ## Codebase Learning Map
 
-This is a native C++ client/server MMO codebase. A useful full-stack analogy is: `DboServer` is the backend service cluster, `DboClient` is the native frontend/runtime, `NtlLib` is the shared infrastructure library layer, and `DboShared` is the shared domain/protocol/data layer.
+This is a native C++ client/server MMO codebase. A useful full-stack analogy is:
+`DboServer` is the backend service cluster, `DboClient` is the native
+frontend/runtime, `NtlLib` is the shared infrastructure library layer, and
+`DboShared` is the shared domain/protocol/data layer.
 
-The folder READMEs are intentionally broad-level orientation docs. They are not meant to replace tracing actual source or validating a feature-specific hypothesis.
+The folder READMEs are intentionally broad-level orientation docs. They are not
+meant to replace tracing actual source or validating a feature-specific hypothesis.
 
 ## Major Feature Warning: New Races or Classes
 
-Adding a new race/class is a cross-cutting feature, not a one-file change. Treat it like adding a new domain primitive that must survive database records, packet schemas, validation rules, character creation UI, asset lookup, animations, equipment binding, localization, and server/client runtime assumptions.
+Adding a new race/class is a cross-cutting feature, not a one-file change. Treat
+it like adding a new domain primitive that must survive database records, packet
+schemas, validation rules, character creation UI, asset lookup, animations,
+equipment binding, localization, and server/client runtime assumptions.
 
-The code already contains a Super Saiyan aspect state for existing characters; that is not the same as a new playable race. See [Researching a New Race or Transformation](docs/NEW_RACE_RESEARCH.md) for confirmed source anchors, lower-risk experiments, and an evidence-first workflow.
+The code already contains a Super Saiyan aspect state for existing characters;
+that is not the same as a new playable race. See
+[Researching a New Race or Transformation](docs/NEW_RACE_RESEARCH.md) for
+confirmed source anchors, lower-risk experiments, and an evidence-first workflow.
