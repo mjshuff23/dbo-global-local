@@ -1,0 +1,30 @@
+DboClient/Lib/NtlSimulation/NtlSLLogic.h
+  s_1327c3e7e78eec::t_f7b3e10e732671 379-389
+DboClient/Lib/NtlSimulation/NtlSobCharProxyDecoration.h
+  s_1327c3e7e78eec::t_f7b3e10e732671 197
+DboClient/Lib/NtlSimulation/NtlSobCharProxy.cpp
+  s_1327c3e7e78eec::t_f7b3e10e732671 1902-1903,2024
+DboClient/Lib/NtlSimulation/NtlSobCharProxyDecoration.cpp
+  s_1327c3e7e78eec::t_f7b3e10e732671 1052-1055,1059-1063
+DboClient/Lib/NtlSimulation/NtlSLVisualDeclear.h
+  s_1327c3e7e78eec::t_f7b3e10e732671 99-112,134-141,180-187,246
+DboClient/Lib/NtlSimulation/NtlSLLogic.cpp
+  s_1327c3e7e78eec::t_f3fddb594f1148 3129
+  s_1327c3e7e78eec::t_f7b3e10e732671 81,3107-3128,3130-3153
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "a35f4cb9d1724011b5619efda0cc26e13092c006",
+  "prompts": {},
+  "sessions": {
+    "s_1327c3e7e78eec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e5743-4d9c-7db0-9ed1-aa30fb6434ef",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  }
+}
