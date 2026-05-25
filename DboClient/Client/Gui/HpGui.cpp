@@ -840,7 +840,7 @@ void CHpGui::SetAP(int nAP, int nMaxAP)
 	if (nAP < 0)
 		nAP = 0;
 
-	int nPercent = nAP * 100 / nMaxAP;
+	int nPercent = static_cast<int>((static_cast<long long>(nAP) * 100) / nMaxAP);
 	if (nPercent > 100)
 		nPercent = 100;
 
