@@ -1,0 +1,19 @@
+.markdownlint.json
+  s_fc24b14a084033::t_c6ba15dc4632ef 1-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "a1b8d9ae47547704edea63136921fbd5a78bd361",
+  "prompts": {},
+  "sessions": {
+    "s_fc24b14a084033": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "26d77014-91a3-47cf-9ff9-4c485e9185f0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  }
+}
