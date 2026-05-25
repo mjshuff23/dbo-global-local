@@ -1,0 +1,54 @@
+README.md
+  s_1327c3e7e78eec::t_1ef07f07f510ab 25
+  s_1327c3e7e78eec::t_2d614fcb90852e 15-24,26,28,30-33
+  s_1327c3e7e78eec::t_7c096e0690ba74 29
+  s_1327c3e7e78eec::t_243b10bc1c51dc 27,34
+DboServer/ExecutionEnv/stop_all.bat
+  s_1327c3e7e78eec::t_2d614fcb90852e 6
+  s_1327c3e7e78eec::t_243b10bc1c51dc 2-5,7-24
+  s_1327c3e7e78eec::t_04fb37744abbf6 1
+NtlLib/Server/Database/Database.cpp
+  s_1327c3e7e78eec::t_f9dd49a7bf2f86 8,311
+DboServer/ExecutionEnv/config/AuthServer.ini
+  s_1327c3e7e78eec::t_2d614fcb90852e 2,8,23
+DboServer/ExecutionEnv/config/CharServer.ini
+  s_1327c3e7e78eec::t_2d614fcb90852e 2-3,13,19,35
+NtlLib/Server/Database/MySQLDatabase.cpp
+  s_1327c3e7e78eec::t_a0d6acfe98dd29 44,88-90,257,260-261
+DboServer/ExecutionEnv/config/ChatServer.ini
+  s_1327c3e7e78eec::t_2d614fcb90852e 2-3,19,25,35
+DboClient/DragonBall/ConfigOptions.xml
+  s_d432cc15ce29bc::t_379bb19a2f580b 3
+DboServer/ExecutionEnv/config/GameServer.ini
+  s_1327c3e7e78eec::t_2d614fcb90852e 2-3,16,22,28
+DboServer/ExecutionEnv/config/QueryServer.ini
+  s_1327c3e7e78eec::t_2d614fcb90852e 16,22,32
+DboServer/ExecutionEnv/start_all.bat
+  s_1327c3e7e78eec::t_243b10bc1c51dc 2-163,165-166
+  s_d432cc15ce29bc::t_363ce2e19cda0e 1
+  s_1327c3e7e78eec::t_1ef07f07f510ab 164
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "936235636f9dfde743f6ce51c1cfe36ec6ad3184",
+  "prompts": {},
+  "sessions": {
+    "s_1327c3e7e78eec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e5743-4d9c-7db0-9ed1-aa30fb6434ef",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    },
+    "s_d432cc15ce29bc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9c5707c0-f164-4ff3-b203-ce599a0e46e6",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Michael Shuff <mjshuff23@gmail.com>"
+    }
+  }
+}
