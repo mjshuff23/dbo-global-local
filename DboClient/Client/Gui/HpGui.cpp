@@ -764,6 +764,7 @@ void CHpGui::UpdateAir()
 
 	if (m_bIsWorldAirPossible && m_ppnlAirPoint->IsVisible())
 	{
+		// Leaving a no-flight area restores the overlay without requiring a new AP event.
 		if (m_eAirColor == TYPE_DISABLE)
 		{
 			CNtlSobAvatar* pSobAvatar = GetNtlSLGlobal()->GetSobAvatar();

@@ -78,7 +78,6 @@
 #include "NtlSobDynamicObject.h"
 #include "NtlSobDynamicObjectAttr.h"
 #include "NtlSobDynamicObjectProxy.h"
-#include "NtlSobCharProxyEquip.h"
 #include "NtlSLPacketGenerator.h"
 #include "NtlSLEventFunc.h"
 #include "NtlSobProxy.h"
