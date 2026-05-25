@@ -143,12 +143,12 @@ RwBool CHpGui::Create(void)
 	m_slotAvatarFocused = m_pbtnAvatar->SigFocused().Connect(this, &CHpGui::OnAvatarFocused);
 	m_slotAvatarClick = m_pbtnAvatar->SigClicked().Connect(this, &CHpGui::OnAvatarClick);
 
-		// AvatarBtn은 버튼이 아닌것처럼. 사운드 없애기
+		// AvatarBtn is not a real button - disable click/focus sounds
 	m_pbtnAvatar->SetClickSound( NULL );
 	m_pbtnAvatar->SetDisableSound( NULL );
 	m_pbtnAvatar->SetFocusSound( NULL );
 
-	// RP는 0으로 세팅
+	// Initialize RP gauge from 0
 	m_ppgbRp->SetRange( 0, 100 );
 	m_ppgbRp->SetPos( 0 );
 
@@ -393,14 +393,14 @@ void CHpGui::HandleEvents(RWS::CMsg &pMsg)
 			m_pBuff->SetBuffAll(pSobAvatar->GetSerialID() );
 		}				
 
-		// Avatar가 초기 생성된 후 GUI에 데이터 입력하라는 최초 단일의 시그널이 EVENT_AIUT_SKILL.
+		// On initial Avatar load, when GUI receives first input, update via EVENT_AIUT_SKILL signal.
 		if( pUpdate->uiUpdateType & EVENT_AIUT_SKILL )
 		{
 			SAvatarInfo* pAvatarInfo = GetNtlSLGlobal()->GetAvatarInfo();
 			SetMaxRPBall(pAvatarInfo->byMaxRpStock);
 		}
 
-		// 실신 상태 일때는 모든 RP, RPBall은 수동으로 리셋한다.
+		// On death, reset all RP and RPBall to their defaults.
 		if( pUpdate->uiUpdateType & EVENT_AIUT_DIE )
 		{
 			SetRPValue( 0, m_nMaxValue );
@@ -562,7 +562,7 @@ void CHpGui::HandleEvents(RWS::CMsg &pMsg)
 
 		if( pData->nRpStock < uiMaxRpStock)
 		{
-			// RP Gauge이미지 변경
+			// Update RP gauge image
 			RwChar buf[256];
 			sprintf_s( buf, 256, "srfNewRPGauge%d", pData->nRpStock );
 			m_ppgbRp->ClearSurface();
@@ -572,7 +572,7 @@ void CHpGui::HandleEvents(RWS::CMsg &pMsg)
 
 		m_ppgbRpBall->SetPos( pData->nRpStock );
 
-		// RpBall Max 갯수가 바뀌면 적용.
+		// Handle change in RpBall max count.
 		if( pData->nMaxRpStock != uiMaxRpStock)
 		{
 			SetMaxRPBall( pData->nMaxRpStock );				
@@ -847,7 +847,7 @@ void CHpGui::SetAP(int nAP, int nMaxAP)
 	if (!m_bIsWorldAirPossible)
 	{
 		m_eAirColor = TYPE_DISABLE;
-		m_psttAirPoint->Format("%u/%u", nAP, nMaxAP);
+		m_psttAirPoint->Format("%d/%d", nAP, nMaxAP);
 		return;
 	}
 
@@ -892,7 +892,7 @@ void CHpGui::SetAP(int nAP, int nMaxAP)
 		m_surRoundAir.SetPosition(rec.left - 6, rec.top - 44);
 	}
 
-	m_psttAirPoint->Format("%u/%u", nAP, nMaxAP);
+	m_psttAirPoint->Format("%d/%d", nAP, nMaxAP);
 }
 
 void CHpGui::CalculateAirHeight()
@@ -908,7 +908,7 @@ void CHpGui::CalculateAirHeight()
 
 		int nHeight = (int)(pPos->y - sHStuff.fFinialHeight);
 
-		m_psttAirHeight->Format("%uM", nHeight);
+		m_psttAirHeight->Format("%dM", nHeight);
 	}
 	else
 	{
