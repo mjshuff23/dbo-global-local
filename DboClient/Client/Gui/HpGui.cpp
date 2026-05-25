@@ -835,9 +835,6 @@ void CHpGui::EnableAir(bool bFlag)
 void CHpGui::SetAP(int nAP, int nMaxAP)
 {
 	if (nMaxAP <= 0)
-		nMaxAP = DBO_CHAR_DEFAULT_AP / 1000;
-
-	if (nMaxAP <= 0)
 		nMaxAP = 1;
 
 	if (nAP < 0)

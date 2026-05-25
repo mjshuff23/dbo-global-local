@@ -3103,6 +3103,8 @@ sITEM_TBLDAT* Logic_GetEquipedWeaponItemTableData(CNtlSob *pSobObj)
 	return NULL;
 }
 
+static const RwUInt8 UPGRADE_AURA_MAX_GRADE = 15;
+
 RwUInt8 Logic_GetEquippedVisualGrade(CNtlSob* pActor, RwUInt8 bySlotIdx)
 {
 	if (!pActor)
@@ -3117,7 +3119,7 @@ RwUInt8 Logic_GetEquippedVisualGrade(CNtlSob* pActor, RwUInt8 bySlotIdx)
 		return 0;
 
 	SEquipItem* pEquipItem = pProxy->GetEquipItem(bySlotIdx);
-	if (!pEquipItem || pEquipItem->byGrade > 15)
+	if (!pEquipItem || pEquipItem->byGrade > UPGRADE_AURA_MAX_GRADE)
 		return 0;
 
 	return pEquipItem->byGrade;
@@ -3126,7 +3128,7 @@ RwUInt8 Logic_GetEquippedVisualGrade(CNtlSob* pActor, RwUInt8 bySlotIdx)
 const SUpgradeAuraEffects& Logic_GetUpgradeAuraEffects(RwUInt8 byGrade)
 {
 	// The shipped pack omits dash secondary grade 3 and primary grade 5 resources.
-	static const SUpgradeAuraEffects s_aUpgradeEffects[16] =
+	static const SUpgradeAuraEffects s_aUpgradeEffects[UPGRADE_AURA_MAX_GRADE + 1] =
 	{
 		{ NTL_VID_GUARD_SUCCESS, NTL_VID_RP_CHARGE, NTL_VID_DASH_ACTIVE_01, NTL_VID_DASH_ACTIVE_02 },
 		{ NTL_VID_GUARD_BLUE, NTL_VID_RP_CHARGE_BLUE, NTL_VID_DASH_ACTIVE_BLUE_01, NTL_VID_DASH_ACTIVE_BLUE_02 },
@@ -3146,7 +3148,7 @@ const SUpgradeAuraEffects& Logic_GetUpgradeAuraEffects(RwUInt8 byGrade)
 		{ NTL_VID_GUARD_PURPLE, NTL_VID_RP_CHARGE_PURPLE, NTL_VID_DASH_ACTIVE_PURPLE_01, NTL_VID_DASH_ACTIVE_PURPLE_02 }
 	};
 
-	if (byGrade > 15)
+	if (byGrade > UPGRADE_AURA_MAX_GRADE)
 		byGrade = 0;
 
 	return s_aUpgradeEffects[byGrade];
